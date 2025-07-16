@@ -24,7 +24,7 @@ const peerConfigConnections = {
   ]
 };
 
- function VideoMeetComponent() {
+function VideoMeetComponent() {
 const socketRef = useRef();
   const socketIdRef = useRef();
   const localVideoRef = useRef();
@@ -300,8 +300,14 @@ const socketRef = useRef();
     getUserMedia();
 
   //  let routerTo = useNavigate();
+  // for the check purpose
 
-    socketRef.current = io(server_url);
+    socketRef.current = io(server_url, {
+       transports: ["websocket"],
+      withCredentials: true
+    });
+  
+
     socketRef.current.on("connect", () => {
       socketIdRef.current = socketRef.current.id;
       socketRef.current.emit("join-call", "room-123");
@@ -467,7 +473,7 @@ let handleEndCall = () =>{
             {screen === true ? <ScreenShareIcon /> : <StopScreenShareIcon />}
           </IconButton> : <></>}
 
-          <Badge badgeContent={newMessages} max={999} color='secondary'>
+          <Badge badgeContent={messages.length} max={999} color='secondary'>
             <IconButton onClick={()=> setModal(!showModal)} style={{color: "white"}}>
             <ChatIcon />
           </IconButton>
