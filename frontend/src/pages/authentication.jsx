@@ -23,6 +23,7 @@ export default function Authentication() {
   
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [email, setEmail] = React.useState("");
   const [name, setName] = React.useState("");
   const [error, setError] = React.useState();
   const [message, setMessage] = React.useState();
@@ -37,16 +38,17 @@ export default function Authentication() {
     
     try{
       if(formState === 0){
-        let result = await handleLogin(username, password)
+        let result = await handleLogin( username, password)
         if(result){
           navigate("/home");
         }
 
       }
       if(formState === 1) {
-        let result = await handleRegister(name, username, password);
+        let result = await handleRegister(name, email, username, password);
         console.log(result);
-        setUsername("")
+        setUsername("");
+        setEmail("");
         setMessage(result);
         setOpen(true);
         setError("");
@@ -113,7 +115,7 @@ export default function Authentication() {
                 fullWidth
                 id="username"
                 label="Full Name"
-                name="email"
+                name="Full Name"
                 autoFocus
                 onChange={(e) => setName(e.target.value)}
               /> : <></> }
@@ -121,10 +123,21 @@ export default function Authentication() {
                 margin="normal"
                 required
                 fullWidth
+                id="email"
+                label="email"
+                name="email"
+                value={email}
+                autoFocus
+                onChange={(e) => setEmail(e.target.value)}
+              />
+                  <TextField
+                margin="normal"
+                required
+                fullWidth
                 id="username"
                 label="Username"
-                name="email"
-                autoFocus
+                name="username"
+                value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
               <TextField

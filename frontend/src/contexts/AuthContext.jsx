@@ -18,11 +18,12 @@ export const AuthProvider = ({children}) =>{
    const [userData, setUserData] = useState(null);
 
 
-    const handleRegister = async (name, username, password) =>{
+    const handleRegister = async (name, username,email, password) =>{
         try{
             let request = await client.post("/register", {
                 name: name,
                 username: username,
+                email: email,
                 password: password
             })
             console.log("response recieved",request.status, request.data )// , ke bd thinks are added from chatgpt

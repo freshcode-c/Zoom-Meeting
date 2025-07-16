@@ -13,7 +13,10 @@ const login = async(req, res) =>{
         return res.status(400).json({message: "Please provide"});
     }
     try{
-        const user = await User.findOne({username});
+        const user = await User.findOne({
+        $or: [{ username }, { email: username }],
+         });
+
         if(!user) {
             return res.status(httpStatus.NOT_FOUND).json({message: "User not found"});
         }
@@ -33,11 +36,11 @@ const login = async(req, res) =>{
 }
 
 const register = async (req, res) =>{
-    const {name, username, password} = req.body;
+    const {name, username, email, password} = req.body;
     // this is from chatgpt
     
   // ✅ Step 1: Check for empty fields
-  if (!name || !username || !password) {
+  if (!name || !username ||!email || !password) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
@@ -52,6 +55,7 @@ const register = async (req, res) =>{
         const newUser = new User({
             name: name,
             username: username,
+            email: email,
             password: hashedPassword
         });
       
